@@ -1,8 +1,13 @@
-import {FC} from 'react';
-
+import { FC, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import {
+  addFavouriteCharacterAction,
+  deleteFavouriteCharacter,
+  findCharacterByIdThunk,
+} from "../../actions/actions";
 import { Character } from "../../types/type";
 import BotonFavorito from "../botones/boton-favorito.componente";
-
 import "./tarjeta-personaje.css";
 
 /**
@@ -15,21 +20,47 @@ import "./tarjeta-personaje.css";
  */
 
 interface TarjetaPersonajeProps {
-  data: Character;
-  favoritos: Character[];
+  character: Character;
+  favourites: Character[];
 }
 
-const TarjetaPersonaje: FC<TarjetaPersonajeProps> = ({ data, favoritos }: TarjetaPersonajeProps) => {
+const TarjetaPersonaje: FC<TarjetaPersonajeProps> = ({
+  character,
+  favourites,
+}: TarjetaPersonajeProps) => {
+  const dispatch = useDispatch();
+
+  const [isFavourite, setIsFavourite] = useState(
+    favourites.find((element) => element.id === character.id) ? true : false
+  );
+
+  const handleFavouriteClick = () => {
+    if (favourites.find((element) => element.id === character.id)) {
+      dispatch(deleteFavouriteCharacter(character));
+      setIsFavourite(false);
+    } else {
+      dispatch(addFavouriteCharacterAction(character));
+      setIsFavourite(true);
+    }
+  };
+
+  const handleClick = () => {
+    dispatch(findCharacterByIdThunk(character.id));
+  };
+console.log('charac',character);
 
   return (
     <div className="tarjeta-personaje">
-      <img
-        src="https://rickandmortyapi.com/api/character/avatar/1.jpeg"
-        alt="Rick Sanchez"
-      />
+      <Link to="/detalle" onClick={handleClick}>
+        <img src={character.image} alt={character.name} />
+      </Link>
       <div className="tarjeta-personaje-body">
-        <span>Rick Sanchez</span>
-        <BotonFavorito esFavorito={false} />
+        <Link to="/detalle" onClick={handleClick}>
+          <span>{character.name}</span>
+        </Link>
+        <div onClick={handleFavouriteClick}>
+          <BotonFavorito esFavorito={isFavourite} />
+        </div>
       </div>
     </div>
   );
