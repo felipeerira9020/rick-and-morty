@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import {
   addFavouriteCharacterAction,
   deleteFavouriteCharacter,
@@ -8,6 +9,7 @@ import {
 } from "../../actions/actions";
 import { Character } from "../../types/type";
 import BotonFavorito from "../botones/boton-favorito.componente";
+
 import "./tarjeta-personaje.css";
 
 /**
@@ -47,7 +49,6 @@ const TarjetaPersonaje: FC<TarjetaPersonajeProps> = ({
   const handleClick = () => {
     dispatch(findCharacterByIdThunk(character.id));
   };
-console.log('charac',character);
 
   return (
     <div className="tarjeta-personaje">

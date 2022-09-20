@@ -4,33 +4,33 @@ import { Character } from "../types/type";
 import { IRootState } from "../store/store";
 import { getCharacter, getCharacters } from "../querys/characters.query";
 
-interface SearchCharactersAction extends Action {
-  type: "SEARCH_CHARACTERS";
+interface FindCharactersAction extends Action {
+  type: "FIND_CHARACTERS";
   payload: { name: string };
 }
 
-interface SearchCharactersErrorAction extends Action {
-  type: "SEARCH_CHARACTERS_ERROR";
-  payload: { error: string };
-}
-
-interface SearchCharactersSuccessAction extends Action {
-  type: "SEARCH_CHARACTERS_SUCCESS";
+interface FindCharactersSuccessAction extends Action {
+  type: "FIND_CHARACTERS_SUCCESS";
   payload: { characters: Character[]; currentPage: number; totalPages: number };
 }
 
-interface SearchCharacterByIdAction extends Action {
-  type: "SEARCH_CHARACTER_BY_ID";
+interface FindCharactersErrorAction extends Action {
+  type: "FIND_CHARACTERS_ERROR";
+  payload: { error: string };
+}
+
+interface FindCharacterByIdAction extends Action {
+  type: "FIND_CHARACTER_BY_ID";
   payload: { id: number };
 }
 
-interface SearchCharacterByIdSuccessAction extends Action {
-  type: "SEARCH_CHARACTER_BY_ID_SUCCESS";
+interface FindCharacterByIdSuccessAction extends Action {
+  type: "FIND_CHARACTER_BY_ID_SUCCESS";
   payload: { character: Character };
 }
 
-interface SearchCharacterByIdErrorAction extends Action {
-  type: "SEARCH_CHARACTER_BY_ID_ERROR";
+interface FindCharacterByIdErrorAction extends Action {
+  type: "FIND_CHARACTER_BY_ID_ERROR";
   payload: { error: string };
 }
 
@@ -53,27 +53,27 @@ interface FindCharactersThunkAction
     void,
     IRootState,
     unknown,
-    | SearchCharactersAction
-    | SearchCharactersSuccessAction
-    | SearchCharactersErrorAction
+    | FindCharactersAction
+    | FindCharactersSuccessAction
+    | FindCharactersErrorAction
   > {}
 
-const searchCharactersAction: ActionCreator<SearchCharactersAction> = (
+const findCharactersAction: ActionCreator<FindCharactersAction> = (
   name: string
-): SearchCharactersAction => {
+): FindCharactersAction => {
   return {
-    type: "SEARCH_CHARACTERS",
+    type: "FIND_CHARACTERS",
     payload: { name: name },
   };
 };
 
-const searchCharactersSuccess: ActionCreator<SearchCharactersSuccessAction> = (
+const findCharactersSuccess: ActionCreator<FindCharactersSuccessAction> = (
   characters: Character[],
   currentPage: number,
   totalPages: number
-): SearchCharactersSuccessAction => {
+): FindCharactersSuccessAction => {
   return {
-    type: "SEARCH_CHARACTERS_SUCCESS",
+    type: "FIND_CHARACTERS_SUCCESS",
     payload: {
       characters: characters,
       currentPage: currentPage,
@@ -82,76 +82,76 @@ const searchCharactersSuccess: ActionCreator<SearchCharactersSuccessAction> = (
   };
 };
 
-const searchCharactersError: ActionCreator<SearchCharactersErrorAction> = (
+const findCharactersError: ActionCreator<FindCharactersErrorAction> = (
   error: string
-): SearchCharactersErrorAction => {
+): FindCharactersErrorAction => {
   return {
-    type: "SEARCH_CHARACTERS_ERROR",
+    type: "FIND_CHARACTERS_ERROR",
     payload: { error: error },
   };
 };
 
-export const searchCharactersThunk = (
+export const findCharactersThunk = (
   name: string,
   currentPage: number
 ): FindCharactersThunkAction => {
   return async (dispatch, getState) => {
-    dispatch(searchCharactersAction(name));
+    dispatch(findCharactersAction(name));
     try {
       const response = await getCharacters(name, currentPage);
       dispatch(
-        searchCharactersSuccess(
+        findCharactersSuccess(
           response.characters,
           currentPage,
-          response.pages
+          response.totalPages
         )
       );
     } catch (error) {
-      dispatch(searchCharactersError(error));
+      dispatch(findCharactersError(error));
     }
   };
 };
 
-interface searchCharacterByIdThunkAction
+interface FindCharacterByIdThunkAction
   extends ThunkAction<
     void,
     IRootState,
     unknown,
-    | SearchCharacterByIdAction
-    | SearchCharacterByIdSuccessAction
-    | SearchCharacterByIdErrorAction
+    | FindCharacterByIdAction
+    | FindCharacterByIdSuccessAction
+    | FindCharacterByIdErrorAction
   > {}
 
-const findCharacterByIdAction: ActionCreator<SearchCharacterByIdAction> = (
+const findCharacterByIdAction: ActionCreator<FindCharacterByIdAction> = (
   id: number
-): SearchCharacterByIdAction => {
+): FindCharacterByIdAction => {
   return {
-    type: "SEARCH_CHARACTER_BY_ID",
+    type: "FIND_CHARACTER_BY_ID",
     payload: { id: id },
   };
 };
 
 const findCharacterByIdSuccess: ActionCreator<
-  SearchCharacterByIdSuccessAction
-> = (character: Character): SearchCharacterByIdSuccessAction => {
+  FindCharacterByIdSuccessAction
+> = (character: Character): FindCharacterByIdSuccessAction => {
   return {
-    type: "SEARCH_CHARACTER_BY_ID_SUCCESS",
+    type: "FIND_CHARACTER_BY_ID_SUCCESS",
     payload: { character: character },
   };
 };
 
-const findCharacterByIdError: ActionCreator<SearchCharacterByIdErrorAction> = (
+const findCharacterByIdError: ActionCreator<FindCharacterByIdErrorAction> = (
   error: string
-): SearchCharacterByIdErrorAction => {
+): FindCharacterByIdErrorAction => {
   return {
-    type: "SEARCH_CHARACTER_BY_ID_ERROR",
+    type: "FIND_CHARACTER_BY_ID_ERROR",
     payload: { error: error },
   };
 };
 
 export const findCharacterByIdThunk = (
   id: number
-): searchCharacterByIdThunkAction => {
+): FindCharacterByIdThunkAction => {
   return async (dispatch, getState) => {
     dispatch(findCharacterByIdAction(id));
     try {
@@ -190,12 +190,12 @@ export const deleteAllFavouriteCharacter: ActionCreator<
 };
 
 export type CharactersActions =
-  | SearchCharactersAction
-  | SearchCharactersSuccessAction
-  | SearchCharactersErrorAction
-  | SearchCharacterByIdAction
-  | SearchCharacterByIdSuccessAction
-  | SearchCharacterByIdErrorAction
+  | FindCharactersAction
+  | FindCharactersSuccessAction
+  | FindCharactersErrorAction
+  | FindCharacterByIdAction
+  | FindCharacterByIdSuccessAction
+  | FindCharacterByIdErrorAction
   | AddFavouriteCharacterAction
   | DeleteFavouriteCharacterAction
   | DeleteAllFavouriteCharacterAction;

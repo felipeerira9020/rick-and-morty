@@ -1,8 +1,10 @@
-import { Character } from "../../types/type";
 import { FC } from "react";
-import "./grilla-personajes.css";
-import TarjetaPersonaje from "./tarjeta-personaje.componente";
+
+import { Character } from "../../types/type";
 import { useSelector } from "../../store/store";
+import TarjetaPersonaje from "./tarjeta-personaje.componente";
+
+import "./grilla-personajes.css";
 
 /**
  * Grilla de personajes para la pagina de inicio
@@ -22,11 +24,11 @@ const GrillaPersonajes: FC<Props> = ({ characters }) => {
   );
 
   if (status === "Loading") {
-    return <div>Loading...</div>;
+    return <div>Cargando.......</div>;
   }
 
   if (error) {
-    return <div>Error al cargar los personajes.</div>;
+    return <div>Error al cargar....</div>;
   }
 
   return (

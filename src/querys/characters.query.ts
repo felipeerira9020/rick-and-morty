@@ -2,7 +2,7 @@ import {Character} from '../types/type';
 
 interface GetCharacters {
     characters: Character[];
-    pages: number;
+    totalPages: number;
 }
 
 export const getCharacters = async (name:string, page: number): Promise<GetCharacters> => {
@@ -10,7 +10,7 @@ export const getCharacters = async (name:string, page: number): Promise<GetChara
     const {results, info} = await response.json();
     return {
         characters: results,
-        pages: info.pages
+        totalPages: info.pages
     }
    
 };

@@ -2,19 +2,19 @@ import { Character, Episode } from "../types/type";
 import { CharactersActions } from "../actions/actions";
 
 type CharacterState = {
-  search: string;
+  busqueda: string;
   favourites: Character[];
   characters: Character[];
-  currentCharacter?: Character | null;
+  currentCharacter: Character | null;
   currentPage: number;
   totalPages: number;
   episodes: Episode[];
-  error?: string | null;
+  error: string | null;
   status: "Loading" | "Completed";
 };
 
-const Stateinitial: CharacterState = {
-  search: "",
+const initialState: CharacterState = {
+  busqueda: "",
   favourites: [],
   characters: [],
   currentCharacter: null,
@@ -26,18 +26,18 @@ const Stateinitial: CharacterState = {
 };
 
 const charactersReducer = (
-  state: CharacterState = Stateinitial,
+  state: CharacterState = initialState,
   action: CharactersActions
 ) => {
   switch (action.type) {
-    case "SEARCH_CHARACTERS":
+    case "FIND_CHARACTERS":
       return {
         ...state,
-        search: action.payload.name,
+        busqueda: action.payload.name,
         status: "Loading",
         error: null,
       };
-    case "SEARCH_CHARACTERS_SUCCESS":
+    case "FIND_CHARACTERS_SUCCESS":
       return {
         ...state,
         characters: action.payload.characters,
@@ -45,26 +45,26 @@ const charactersReducer = (
         currentPage: action.payload.currentPage,
         totalPages: action.payload.totalPages,
       };
-    case "SEARCH_CHARACTERS_ERROR":
+    case "FIND_CHARACTERS_ERROR":
       return {
         ...state,
         error: action.payload.error,
         characters: [],
         status: "Completed",
       };
-    case "SEARCH_CHARACTER_BY_ID":
+    case "FIND_CHARACTER_BY_ID":
       return {
         ...state,
         status: "Loading",
         error: null,
       };
-    case "SEARCH_CHARACTER_BY_ID_SUCCESS":
+    case "FIND_CHARACTER_BY_ID_SUCCESS":
       return {
         ...state,
         currentCharacter: action.payload.character,
         status: "Completed",
       };
-    case "SEARCH_CHARACTER_BY_ID_ERROR":
+    case "FIND_CHARACTER_BY_ID_ERROR":
       return {
         ...state,
         error: action.payload.error,
